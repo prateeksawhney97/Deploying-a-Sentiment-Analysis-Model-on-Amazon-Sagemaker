@@ -8,6 +8,7 @@ Deploying a Sentiment Analysis Model on Amazon Sagemaker which consists of deplo
 
 ### The application architecture diagram is:
 
+![Web app Diagram](./Web App Diagram.svg) 
 
 Web application Diagram
 
