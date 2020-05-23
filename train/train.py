@@ -67,9 +67,26 @@ def train(model, train_loader, epochs, optimizer, loss_fn, device):
     device       - Where the model and data should be loaded (gpu or cpu).
     """
     
-    # TODO: Paste the train() method developed in the notebook here.
-
-    pass
+    for epoch in range(1, epochs + 1):
+        model.train()
+        total_loss = 0
+        for batch in train_loader:         
+            batch_X, batch_y = batch
+            
+            batch_X = batch_X.to(device)
+            batch_y = batch_y.to(device)
+            
+            # TODO: Complete this train method to train the model provided.
+            
+            optimizer.zero_grad() # Address accumulation of gradients
+            output = model.forward(batch_X) # Pass the data trhough the model and apply previous operations
+            loss = loss_fn(output, batch_y) # Calculate the batch loss
+            loss.backward() # Compute gradients of all the variables loss
+            
+            optimizer.step() # Update using caluclated gradients
+            
+            total_loss += loss.data.item()
+        print("Epoch: {}, BCELoss: {}".format(epoch, total_loss / len(train_loader)))
 
 
 if __name__ == '__main__':
@@ -124,9 +141,7 @@ if __name__ == '__main__':
     # Train the model.
     optimizer = optim.Adam(model.parameters())
     loss_fn = torch.nn.BCELoss()
-
     train(model, train_loader, args.epochs, optimizer, loss_fn, device)
-
     # Save the parameters used to construct the model
     model_info_path = os.path.join(args.model_dir, 'model_info.pth')
     with open(model_info_path, 'wb') as f:
